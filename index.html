@@ -18,6 +18,21 @@
     --font-mono: "SF Mono", Menlo, Monaco, Consolas, "Courier New", monospace;
   }
 
+  /* THEME: LIGHT MODE OVERRIDES */
+  body.light {
+    --bg-main: #eef1ff;
+    --bg-card: #ffffff;
+    --bg-card-soft: #ffffff;
+    --text-main: #141621;
+    --text-muted: #6a6f90;
+    --border-soft: #d9ddf4;
+    background:
+      radial-gradient(circle at top left, rgba(79, 140, 255, 0.14), transparent 55%),
+      radial-gradient(circle at bottom right, rgba(168, 85, 255, 0.16), transparent 60%),
+      linear-gradient(135deg, #eef1ff, #ffffff);
+    color: var(--text-main);
+  }
+
   body {
     margin: 0;
     padding: 16px;
@@ -108,12 +123,59 @@
     color: var(--text-muted);
   }
 
-  /* HAMBURGER MENU */
+  /* THEME TOGGLE */
+  .toggle-theme {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(10, 12, 32, 0.96);
+    cursor: pointer;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+  }
+
+  body.light .toggle-theme {
+    background: #ffffff;
+    border-color: rgba(0, 0, 0, 0.08);
+  }
+
+  .toggle-pill {
+    width: 36px;
+    height: 16px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--neon-primary), var(--neon-secondary));
+    position: relative;
+  }
+
+  .toggle-knob {
+    width: 14px;
+    height: 14px;
+    border-radius: 999px;
+    background: #050713;
+    position: absolute;
+    top: 1px;
+    left: 2px;
+    transition: transform 0.25s ease, background 0.25s ease;
+  }
+
+  body.light .toggle-knob {
+    transform: translateX(16px);
+    background: #fdfcff;
+  }
+
+  .mode-label {
+    white-space: nowrap;
+  }
+
+  /* HAMBURGER MENU (now non-fixed, ga nutup judul) */
   .hamburger {
-    position: fixed;
-    top: 12px;
-    left: 12px;
-    z-index: 1001;
+    position: relative;
+    z-index: 2;
     background: rgba(10, 12, 32, 0.96);
     border-radius: 999px;
     border: 1px solid rgba(255, 255, 255, 0.15);
@@ -123,6 +185,7 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
+    margin-bottom: 10px;
   }
 
   .hamburger span.label {
@@ -130,6 +193,11 @@
     text-transform: uppercase;
     letter-spacing: 0.16em;
     color: var(--text-muted);
+  }
+
+  body.light .hamburger {
+    background: #ffffff;
+    border-color: rgba(0,0,0,0.08);
   }
 
   .menu-panel {
@@ -145,6 +213,11 @@
     transition: transform 0.25s ease;
     padding: 14px;
     z-index: 1000;
+  }
+
+  body.light .menu-panel {
+    background: #ffffff;
+    color: var(--text-main);
   }
 
   .menu-panel.open {
@@ -175,6 +248,10 @@
     background: rgba(24, 32, 80, 0.96);
   }
 
+  body.light .menu-item:hover {
+    background: #eef1ff;
+  }
+
   .menu-item span.icon {
     font-size: 16px;
   }
@@ -199,7 +276,7 @@
     z-index: 1;
   }
 
-  /* SECTION NAV CHIPS */
+  /* SECTION NAV (CHIPS) */
   .section-nav {
     display: flex;
     flex-wrap: wrap;
@@ -238,6 +315,11 @@
     color: #050718;
   }
 
+  body.light .nav-chip {
+    background: #ffffff;
+    border-color: rgba(0,0,0,0.08);
+  }
+
   /* CARDS */
   .card {
     position: relative;
@@ -251,6 +333,14 @@
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
     margin-bottom: 12px;
     z-index: 1;
+  }
+
+  body.light .card {
+    background:
+      radial-gradient(circle at top left, rgba(79, 140, 255, 0.04), transparent 60%),
+      radial-gradient(circle at bottom right, rgba(168, 85, 255, 0.05), transparent 70%),
+      var(--bg-card-soft);
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
   }
 
   .card-header {
@@ -326,6 +416,14 @@
   select:focus {
     border-color: var(--neon-primary);
     box-shadow: 0 0 10px rgba(79, 140, 255, 0.55);
+  }
+
+  body.light input[type="text"],
+  body.light input[type="number"],
+  body.light input[type="date"],
+  body.light select {
+    background: #f8f8ff;
+    color: #141621;
   }
 
   .note {
@@ -427,6 +525,14 @@
     outline: none;
   }
 
+  body.light textarea {
+    background:
+      radial-gradient(circle at top left, rgba(79, 140, 255, 0.06), transparent 70%),
+      radial-gradient(circle at bottom right, rgba(168, 85, 255, 0.05), transparent 70%),
+      #fdfdff;
+    color: #141621;
+  }
+
   /* FOOTER */
   .footer {
     margin-top: 22px;
@@ -460,47 +566,13 @@
 </head>
 <body>
 
-<!-- HAMBURGER -->
-<div class="hamburger" onclick="toggleMenu()">
-  <span>☰</span>
-  <span class="label">Menu Laporan Shift</span>
-</div>
-
-<!-- MENU PANEL -->
-<div id="menuPanel" class="menu-panel">
-  <div class="menu-title">Menu Laporan Shift</div>
-
-  <div class="menu-item" onclick="goSection('section-panduan')">
-    <span class="icon">📘</span><span>Panduan Pengisian</span>
-  </div>
-  <div class="menu-item" onclick="goSection('section-umum')">
-    <span class="icon">🧾</span><span>Data Umum</span>
-  </div>
-  <div class="menu-item" onclick="goSection('section-sales')">
-    <span class="icon">💰</span><span>Sales</span>
-  </div>
-  <div class="menu-item" onclick="goSection('section-program')">
-    <span class="icon">🛒</span><span>Program Penjualan</span>
-  </div>
-  <div class="menu-item" onclick="goSection('section-member')">
-    <span class="icon">🧑‍🤝‍🧑</span><span>Member & Loyalty</span>
-  </div>
-  <div class="menu-item" onclick="goSection('section-sku')">
-    <span class="icon">⭐</span><span>SKU Fokus</span>
-  </div>
-  <div class="menu-item" onclick="goSection('section-output')">
-    <span class="icon">📤</span><span>Output Laporan</span>
-  </div>
-  <div class="menu-item" onclick="goSection('section-motivasi')">
-    <span class="icon">✨</span><span>Motivasi Shift</span>
-  </div>
-
-  <div class="menu-footer">
-    “Kerja hebat bukan dari yang paling cepat, tapi dari yang paling konsisten.”
-  </div>
-</div>
-
 <div class="wrap">
+  <!-- HAMBURGER (sekarang tidak nutup judul) -->
+  <div class="hamburger" onclick="toggleMenu()">
+    <span>☰</span>
+    <span class="label">Menu Laporan Shift</span>
+  </div>
+
   <!-- HEADER -->
   <div class="header">
     <div class="brand-block">
@@ -511,6 +583,48 @@
         <div class="brand-title">KP GARUNG TAMBAK</div>
         <div class="brand-sub">Laporan Per Shift — 2G44</div>
       </div>
+    </div>
+
+    <!-- THEME TOGGLE -->
+    <button class="toggle-theme" id="themeToggle" type="button">
+      <div class="toggle-pill">
+        <div class="toggle-knob"></div>
+      </div>
+      <span class="mode-label">Dark Mode</span>
+    </button>
+  </div>
+
+  <!-- MENU PANEL -->
+  <div id="menuPanel" class="menu-panel">
+    <div class="menu-title">Menu Laporan Shift</div>
+
+    <div class="menu-item" onclick="goSection('section-panduan')">
+      <span class="icon">📘</span><span>Panduan Pengisian</span>
+    </div>
+    <div class="menu-item" onclick="goSection('section-umum')">
+      <span class="icon">🧾</span><span>Data Umum</span>
+    </div>
+    <div class="menu-item" onclick="goSection('section-sales')">
+      <span class="icon">💰</span><span>Sales</span>
+    </div>
+    <div class="menu-item" onclick="goSection('section-program')">
+      <span class="icon">🛒</span><span>Program Penjualan</span>
+    </div>
+    <div class="menu-item" onclick="goSection('section-member')">
+      <span class="icon">🧑‍🤝‍🧑</span><span>Member & Loyalty</span>
+    </div>
+    <div class="menu-item" onclick="goSection('section-sku')">
+      <span class="icon">⭐</span><span>SKU Fokus</span>
+    </div>
+    <div class="menu-item" onclick="goSection('section-output')">
+      <span class="icon">📤</span><span>Output Laporan</span>
+    </div>
+    <div class="menu-item" onclick="goSection('section-motivasi')">
+      <span class="icon">✨</span><span>Motivasi Shift</span>
+    </div>
+
+    <div class="menu-footer">
+      “Kerja hebat bukan dari yang paling cepat, tapi dari yang paling konsisten.”
     </div>
   </div>
 
@@ -796,7 +910,7 @@
   <!-- MOTIVASI -->
   <div class="card" id="section-motivasi">
     <div class="card-header">
-      <div class="card-title"><strong>Motivasi Shift</strong> · Versi Simple & Ngena</div>
+      <div class="card-title"><strong>Motivasi Shift</strong></div>
       <span class="badge-kpi">Motivasi</span>
     </div>
     <div style="font-size:12px;">
@@ -817,6 +931,34 @@
 </div>
 
 <script>
+/* THEME TOGGLE */
+(function initTheme(){
+  const body = document.body;
+  const toggle = document.getElementById('themeToggle');
+  const label = toggle.querySelector('.mode-label');
+
+  function applyTheme(mode){
+    if(mode === 'light'){
+      body.classList.add('light');
+      label.textContent = 'Light Mode';
+    } else {
+      body.classList.remove('light');
+      label.textContent = 'Dark Mode';
+    }
+  }
+
+  const saved = localStorage.getItem('reportTheme');
+  applyTheme(saved === 'light' ? 'light' : 'dark');
+
+  toggle.addEventListener('click', () => {
+    const isLight = body.classList.contains('light');
+    const next = isLight ? 'dark' : 'light';
+    applyTheme(next);
+    localStorage.setItem('reportTheme', next);
+  });
+})();
+
+/* MENU + NAV */
 function toggleMenu() {
   const panel = document.getElementById('menuPanel');
   panel.classList.toggle('open');
@@ -830,6 +972,7 @@ function goSection(id) {
   panel.classList.remove('open');
 }
 
+/* HELPER ANGKA */
 function getNum(id) {
   const el = document.getElementById(id);
   if (!el) return 0;
@@ -860,6 +1003,7 @@ function acv(actual, target) {
   return Math.round((a / t) * 100);
 }
 
+/* GENERATE LAPORAN */
 function generateLaporan() {
   const kode = document.getElementById('kodeToko').value || '';
   const nama = document.getElementById('namaToko').value || '';
@@ -1014,6 +1158,7 @@ SHIFT : ${shift}
   document.getElementById('outputText').value = laporan;
 }
 
+/* COPY & WA */
 async function copyLaporan() {
   const text = document.getElementById('outputText').value || '';
   if (!text.trim()) {
