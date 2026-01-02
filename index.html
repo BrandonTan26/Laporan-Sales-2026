@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Laporan Per Shift - KP Garung Tambak</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+  :root {
+    --bg-main: #050718;
+    --bg-card: rgba(10, 12, 32, 0.98);
+    --bg-card-soft: rgba(18, 22, 52, 0.98);
+    --text-main: #f8f8ff;
+    --text-muted: #a6add8;
+    --neon-primary: #4f8cff;
+    --neon-secondary: #a855ff;
+    --border-soft: #262b4a;
+    --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-mono: "SF Mono", Menlo, Monaco, Consolas, "Courier New", monospace;
+  }
+
+  body.light {
+    --bg-main: #eef1ff;
+    --bg-card: #ffffff;
+    --bg-card-soft: #ffffff;
+    --text-main: #141621;
+    --text-muted: #6a6f90;
+    --border-soft: #d9ddf4;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    padding: 16px;
+    background:
+      radial-gradient(circle at top left, rgba(79, 140, 255, 0.35), transparent 55%),
+      radial-gradient(circle at bottom right, rgba(168, 85, 255, 0.28), transparent 60%),
+      radial-gradient(circle at center, #050718, #050210);
+    font-family: var(--font-main);
+    color: var(--text-main);
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+
+  body.light {
+    background:
+      radial-gradient(circle at top left, rgba(79, 140, 255, 0.14), transparent 55%),
+      radial-gradient(circle at bottom right, rgba(168, 85, 255, 0.16), transparent 60%),
+      linear-gradient(135deg, #eef1ff, #ffffff);
+  }
+
+  .wrap {
+    max-width: 980px;
+    margin: 0 auto 40px auto;
+    position: relative;
+  }
+
+  .wrap::before {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.03) 1px,
+      transparent 1px
+    );
+    background-size: 100% 3px;
+    opacity: 0.10;
+    mix-blend-mode: soft-light;
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .brand-block {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+  }
+
+  .logo-alfamart {
+    padding: 6px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background:
+      radial-gradient(circle at 20% 0%, rgba(255, 255, 255, 0.16), transparent 55%),
+      linear-gradient(135deg, #111632, #050718);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo-alfamart span {
+    font-weight: 900;
+    font-size: 16px;
+    letter-spacing: 0.12em;
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .brand-title {
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-main);
+    text-shadow:
+      0 0 10px rgba(0, 0, 0, 0.6),
+      0 0 16px rgba(79, 140, 255, 0.55);
+  }
+
+  .brand-sub {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--text-muted);
+  }
+
+  .toggle-theme {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 11px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.20);
+    background: rgba(11, 14, 40, 0.95);
+    cursor: pointer;
+    font-size: 11px;
+    color: var(--text-muted);
+    position: relative;
+    z-index: 1;
+  }
+
+  body.light .toggle-theme {
+    background: rgba(255, 255, 255, 0.98);
+    border-color: rgba(0, 0, 0, 0.06);
+  }
+
+  .toggle-pill {
+    width: 42px;
+    height: 18px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--neon-primary), var(--neon-secondary));
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+  }
+
+  .toggle-knob {
+    width: 14px;
+    height: 14px;
+    border-radius: 999px;
+    background: #050713;
+    position: absolute;
+    top: 1px;
+    left: 2px;
+    transition: transform 0.25s ease, background 0.25s ease;
+  }
+
+  body.light .toggle-knob {
+    transform: translateX(20px);
+    background: #fdfcff;
+  }
+
+  .mode-label {
+    white-space: nowrap;
+  }
+
+  .divider-neon {
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, transparent, var(--neon-primary), var(--neon-secondary), transparent);
+    box-shadow:
+      0 0 14px rgba(79, 140, 255, 0.55),
+      0 0 14px rgba(168, 85, 255, 0.55);
+    margin-bottom: 12px;
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+  }
+
+  .card {
+    position: relative;
+    background:
+      radial-gradient(circle at top left, rgba(255, 255, 255, 0.04), transparent 60%),
+      radial-gradient(circle at bottom right, rgba(79, 140, 255, 0.16), transparent 70%),
+      var(--bg-card);
+    border-radius: 18px;
+    padding: 14px 14px 12px 14px;
+    border: 1px solid var(--border-soft);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+    margin-bottom: 12px;
+    z-index: 1;
+  }
+
+  body.light .card {
+    background:
+      radial-gradient(circle at top left, rgba(79, 140, 255, 0.04), transparent 60%),
+      radial-gradient(circle at bottom right, rgba(168, 85, 255, 0.05), transparent 70%),
+      var(--bg-card-soft);
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .card-title {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.20em;
+    color: var(--text-muted);
+  }
+
+  .card-title strong {
+    color: var(--neon-primary);
+  }
+
+  .badge-kpi {
+    font-size: 10px;
+    padding: 2px 9px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: var(--text-muted);
+    background: rgba(12, 15, 44, 0.9);
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 12px;
+  }
+
+  @media (max-width: 720px) {
+    .header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .grid-2 {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 4px;
+    display: block;
+    color: var(--text-muted);
+  }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="date"],
+  select {
+    width: 100%;
+    padding: 7px 9px;
+    border-radius: 10px;
+    border: 1px solid var(--border-soft);
+    background: rgba(8, 10, 30, 0.96);
+    color: var(--text-main);
+    font-size: 12px;
+    outline: none;
+    transition: border 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  }
+
+  body.light input[type="text"],
+  body.light input[type="number"],
+  body.light input[type="date"],
+  body.light select {
+    background: #f8f8ff;
+  }
+
+  input[type="text"]:focus,
+  input[type="number"]:focus,
+  input[type="date"]:focus,
+  select:focus {
+    border-color: var(--neon-primary);
+    box-shadow: 0 0 10px rgba(79, 140, 255, 0.55);
+  }
+
+  input[readonly] {
+    opacity: 0.7;
+    cursor: default;
+    background: rgba(18, 20, 42, 0.98);
+  }
+
+  body.light input[readonly] {
+    background: #eef0ff;
+  }
+
+  .note {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  .kpi-row {
+    border-left: 3px solid var(--neon-primary);
+    padding-left: 10px;
+  }
+
+  .kpi-row.yellow {
+    border-left-color: var(--neon-secondary);
+  }
+
+  .kpi-name {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.20em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    color: var(--neon-primary);
+  }
+
+  .btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  button {
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-weight: 600;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, opacity 0.15s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  button span.icon {
+    font-size: 13px;
+  }
+
+  button::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0.32),
+      transparent,
+      transparent
+    );
+    opacity: 0;
+    transform: translateX(-100%);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  button:hover::before {
+    opacity: 1;
+    transform: translateX(100%);
+  }
+
+  .btn-red {
+    background: linear-gradient(135deg, #4f8cff, #2b5fbf);
+    color: #fdfdff;
+    box-shadow: 0 0 14px rgba(79, 140, 255, 0.7);
+  }
+
+  .btn-yellow {
+    background: linear-gradient(135deg, #a855ff, #6d28d9);
+    color: #fdfdff;
+    box-shadow: 0 0 14px rgba(168, 85, 255, 0.7);
+  }
+
+  .btn-wa {
+    background: linear-gradient(135deg, #00c96f, #008c48);
+    color: #f5fff9;
+    box-shadow: 0 0 14px rgba(0, 201, 111, 0.75);
+  }
+
+  button:hover {
+    transform: translateY(-1px);
+    opacity: 0.96;
+  }
+
+  button:active {
+    transform: translateY(1px);
+    box-shadow: none;
+    opacity: 0.9;
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 260px;
+    padding: 10px 10px;
+    border-radius: 12px;
+    border: 1px solid var(--border-soft);
+    background:
+      radial-gradient(circle at top left, rgba(79, 140, 255, 0.12), transparent 70%),
+      radial-gradient(circle at bottom right, rgba(168, 85, 255, 0.10), transparent 70%),
+      rgba(6, 8, 28, 0.98);
+    color: var(--text-main);
+    font-size: 12px;
+    font-family: var(--font-mono);
+    white-space: pre-wrap;
+    resize: vertical;
+    outline: none;
+  }
+
+  body.light textarea {
+    background:
+      radial-gradient(circle at top left, rgba(79, 140, 255, 0.06), transparent 70%),
+      radial-gradient(circle at bottom right, rgba(168, 85, 255, 0.05), transparent 70%),
+      #fdfdff;
+  }
+
+  .footer {
+    margin-top: 22px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-muted);
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-main {
+    margin-bottom: 3px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, var(--neon-primary), var(--neon-secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow:
+      0 0 10px rgba(79, 140, 255, 0.7),
+      0 0 10px rgba(168, 85, 255, 0.7);
+  }
+
+  .footer-sub {
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  </style>
+</head>
+<body class="dark">
+  <div class="wrap">
+    <!-- HEADER -->
+    <div class="header">
+      <div class="brand-block">
+        <div class="logo-alfamart">
+          <span>ALFA</span>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">KP GARUNG TAMBAK</div>
+          <div class="brand-sub">Laporan Per Shift · Sales & KPI</div>
+        </div>
+      </div>
+      <button class="toggle-theme" id="themeToggle" type="button">
+        <div class="toggle-pill">
+          <div class="toggle-knob"></div>
+        </div>
+        <span class="mode-label">Dark Mode</span>
+      </button>
+    </div>
+
+    <div class="divider-neon"></div>
+
+    <!-- DATA UMUM -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <strong>Data Umum</strong> · Header Laporan
+        </div>
+        <span class="badge-kpi">Header</span>
+      </div>
+      <div class="grid-2">
+        <div>
+          <label>Kode Toko</label>
+          <input type="text" id="kodeToko" value="2G44">
+        </div>
+        <div>
+          <label>Nama Toko</label>
+          <input type="text" id="namaToko" value="KP. GARUNG TAMBAK">
+        </div>
+        <div>
+          <label>Tanggal</label>
+          <input type="date" id="tanggal">
+        </div>
+        <div>
+          <label>Pejabat</label>
+          <input type="text" id="pejabat" placeholder="Nama pejabat / AC">
+        </div>
+        <div>
+          <label>Kasir</label>
+          <input type="text" id="kasir" placeholder="Nama kasir">
+        </div>
+        <div>
+          <label>Shift</label>
+          <select id="shift">
+            <option value="1">Shift 1</option>
+            <option value="2">Shift 2</option>
+          </select>
+        </div>
+      </div>
+      <p class="note">
+        Target sudah diset di bawah. Kasir cukup isi <strong>tanggal, pejabat, kasir, shift, dan actual</strong>.
+      </p>
+    </div>
+
+    <!-- SALES -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">KPI · <strong>Sales</strong></div>
+        <span class="badge-kpi">SALES</span>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi-name">SALES</div>
+        <div class="grid-2">
+          <div>
+            <label>Target Shift 1 (Rp)</label>
+            <input type="number" id="salesTarget1" value="3520000">
+          </div>
+          <div>
+            <label>Target Shift 2 (Rp)</label>
+            <input type="number" id="salesTarget2" value="5280000">
+          </div>
+          <div>
+            <label>Actual (Rp)</label>
+            <input type="number" id="salesActual" placeholder="Isi sales actual shift ini">
+          </div>
+        </div>
+        <p class="note">Isi angka <strong>tanpa titik</strong>, contoh: 3520000.</p>
+      </div>
+    </div>
+
+    <!-- PSM -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">KPI · <strong>PSM</strong></div>
+        <span class="badge-kpi">#1 PSM</span>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi-name">PSM</div>
+        <div class="grid-2">
+          <div>
+            <label>Target QTY Shift 1</label>
+            <input type="number" id="psmTarget1" value="15">
+          </div>
+          <div>
+            <label>Target QTY Shift 2</label>
+            <input type="number" id="psmTarget2" value="25">
+          </div>
+          <div>
+            <label>Actual QTY</label>
+            <input type="number" id="psmActual" placeholder="QTY PSM shift ini">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PWP -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">KPI · <strong>PWP</strong></div>
+        <span class="badge-kpi">#2 PWP</span>
+      </div>
+      <div class="kpi-row yellow">
+        <div class="kpi-name">PWP</div>
+        <div class="grid-2">
+          <div>
+            <label>Target QTY Shift 1</label>
+            <input type="number" id="pwpTarget1" value="7">
+          </div>
+          <div>
+            <label>Target QTY Shift 2</label>
+            <input type="number" id="pwpTarget2" value="15">
+          </div>
+          <div>
+            <label>Actual QTY</label>
+            <input type="number" id="pwpActual" placeholder="QTY PWP shift ini">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SERBA GRATIS -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">KPI · <strong>Serba Gratis</strong></div>
+        <span class="badge-kpi">#3 SERBA GRATIS</span>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi-name">SERBA GRATIS</div>
+        <div class="grid-2">
+          <div>
+            <label>Target Paket Shift 1</label>
+            <input type="number" id="sgTarget1" value="9">
+          </div>
+          <div>
+            <label>Target Paket Shift 2</label>
+            <input type="number" id="sgTarget2" value="15">
+          </div>
+          <div>
+            <label>Actual Paket</label>
+            <input type="number" id="sgActual" placeholder="Paket serba gratis shift ini">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PULSA / PAKET -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">KPI · <strong>Pulsa / Paket</strong></div>
+        <span class="badge-kpi">#4 Pulsa/Paket</span>
+      </div>
+      <div class="kpi-row yellow">
+        <div class="kpi-name">PULSA / PAKET</div>
+        <div class="grid-2">
+          <div>
+            <label>Target Rp Shift 1</label>
+            <input type="number" id="pulsaTarget1" value="200000">
+          </div>
+          <div>
+            <label>Target Rp Shift 2</label>
+            <input type="number" id="pulsaTarget2" value="200000">
+          </div>
+          <div>
+            <label>Actual Rp</label>
+            <input type="number" id="pulsaActual" placeholder="Rp pulsa/paket shift ini">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STRUK MEMBER -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">KPI · <strong>Struk Member</strong></div>
+        <span class="badge-kpi">#5 STRUK MEMBER</span>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi-name">STRUK MEMBER</div>
+        <div class="grid-2">
+          <div>
+            <label>Jumlah Struk</label>
+            <input type="number" id="strukTotal" placeholder="Total struk shift ini">
+          </div>
+          <div>
+            <label>Struk Member</label>
+            <input type="number" id="strukMember" placeholder="Struk pakai member">
+          </div>
+        </div>
+        <p class="note">ACV% dihitung dari <strong>Struk Member / Jumlah Struk</strong>.</p>
+      </div>
+    </div>
+
+    <!-- NEW MEMBER -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">KPI · <strong>New Member</strong></div>
+        <span class="badge-kpi">#6 NEW MEMBER</span>
+      </div>
+      <div class="kpi-row yellow">
+        <div class="kpi-name">NEW MEMBER</div>
+        <div class="grid-2">
+          <div>
+            <label>Target (QTY)</label>
+            <input type="number" id="nmTarget" value="1">
+          </div>
+          <div>
+            <label>Actual (QTY)</label>
+            <input type="number" id="nmActual" placeholder="New member shift ini">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEGER -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">KPI · <strong>Seger</strong></div>
+        <span class="badge-kpi">#7 SEGER</span>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi-name">SEGER</div>
+        <div class="grid-2">
+          <div>
+            <label>Target (QTY)</label>
+            <input type="number" id="segerTarget" value="15">
+          </div>
+          <div>
+            <label>Actual (QTY)</label>
+            <input type="number" id="segerActual" placeholder="QTY Seger shift ini">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CEMILAN CEBAN -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">KPI · <strong>Cemilan Ceban</strong></div>
+        <span class="badge-kpi">#8 CEMILAN CEBAN</span>
+      </div>
+      <div class="kpi-row yellow">
+        <div class="kpi-name">CEMILAN CEBAN</div>
+        <div class="grid-2">
+          <div>
+            <label>Target (QTY)</label>
+            <input type="number" id="cemilanTarget" value="10">
+          </div>
+          <div>
+            <label>Actual (QTY)</label>
+            <input type="number" id="cemilanActual" placeholder="QTY Cemilan Ceban shift ini">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><strong>Output</strong> · Laporan Siap Kirim WA</div>
+        <span class="badge-kpi">SHIFT REPORT</span>
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn-red" onclick="generateLaporan()">
+          <span class="icon">⚡</span>
+          <span>Generate Laporan</span>
+        </button>
+        <button type="button" class="btn-yellow" onclick="copyLaporan()">
+          <span class="icon">📋</span>
+          <span>Copy Laporan</span>
+        </button>
+        <button type="button" class="btn-wa" onclick="openWhatsAppGroup()">
+          <span class="icon">🟢</span>
+          <span>Kirim ke Grup WA</span>
+        </button>
+      </div>
+      <textarea id="output" placeholder="Klik 'Generate Laporan' dulu, lalu copy & paste ke grup WA..."></textarea>
+      <p class="note">
+        Flow: isi data → klik <strong>Generate</strong> → <strong>Copy</strong> → <strong>Kirim ke Grup WA</strong> → paste di chat.
+      </p>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div class="footer-main">© 2025 Laporan Shift KP Garung Tambak</div>
+      <div class="footer-sub">Template by Brandon Tan · Powered by Jarvis</div>
+    </div>
+  </div>
+
+  <script>
+  // THEME TOGGLE
+  (function initTheme() {
+    const body = document.body;
+    const toggle = document.getElementById("themeToggle");
+    const label = toggle.querySelector(".mode-label");
+
+    function applyTheme(mode) {
+      if (mode === "light") {
+        body.classList.remove("dark");
+        body.classList.add("light");
+        label.textContent = "Light Mode";
+      } else {
+        body.classList.remove("light");
+        body.classList.add("dark");
+        label.textContent = "Dark Mode";
+      }
+    }
+
+    const saved = localStorage.getItem("reportTheme");
+    if (saved === "light" || saved === "dark") {
+      applyTheme(saved);
+    } else {
+      applyTheme("dark");
+    }
+
+    toggle.addEventListener("click", () => {
+      const cur = body.classList.contains("light") ? "light" : "dark";
+      const next = cur === "light" ? "dark" : "light";
+      applyTheme(next);
+      localStorage.setItem("reportTheme", next);
+    });
+  })();
+
+  function formatTanggalId(value) {
+    if (!value) return "";
+    const parts = value.split("-");
+    if (parts.length !== 3) return value;
+    return parts[2] + "-" + parts[1] + "-" + parts[0]; // dd-mm-yyyy
+  }
+
+  function getNumber(id) {
+    const el = document.getElementById(id);
+    if (!el) return 0;
+    const raw = (el.value || "").toString().replace(/\./g, "").replace(/,/g, "");
+    const n = Number(raw);
+    return isNaN(n) ? 0 : n;
+  }
+
+  function hitungAcv(actual, target) {
+    const a = Number(actual) || 0;
+    const t = Number(target) || 0;
+    if (t <= 0) return 0;
+    return Math.round((a / t) * 100);
+  }
+
+  function hitungGap(actual, target) {
+    const a = Number(actual) || 0;
+    const t = Number(target) || 0;
+    const g = a - t;
+    if (g > 0) return { raw: g, text: "+" + g };
+    if (g < 0) return { raw: g, text: "" + g };
+    return { raw: 0, text: "0" };
+  }
+
+  function formatRupiah(n) {
+    const num = Number(n) || 0;
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+
+  function generateLaporan() {
+    const kodeToko = document.getElementById("kodeToko").value || "";
+    const namaToko = document.getElementById("namaToko").value || "";
+    const tanggalRaw = document.getElementById("tanggal").value || "";
+    const tanggal = formatTanggalId(tanggalRaw);
+    const pejabat = document.getElementById("pejabat").value || "";
+    const kasir = document.getElementById("kasir").value || "";
+    const shift = document.getElementById("shift").value || "1";
+    const shNum = Number(shift) || 1;
+
+    // SALES
+    const salesT1 = getNumber("salesTarget1");
+    const salesT2 = getNumber("salesTarget2");
+    const salesActual = getNumber("salesActual");
+    const salesTarget = shNum === 1 ? salesT1 : salesT2;
+    const salesAcv = hitungAcv(salesActual, salesTarget);
+    const salesGap = hitungGap(salesActual, salesTarget);
+
+    // PSM
+    const psmT1 = getNumber("psmTarget1");
+    const psmT2 = getNumber("psmTarget2");
+    const psmActual = getNumber("psmActual");
+    const psmTarget = shNum === 1 ? psmT1 : psmT2;
+    const psmAcv = hitungAcv(psmActual, psmTarget);
+    const psmGap = hitungGap(psmActual, psmTarget);
+
+    // PWP
+    const pwpT1 = getNumber("pwpTarget1");
+    const pwpT2 = getNumber("pwpTarget2");
+    const pwpActual = getNumber("pwpActual");
+    const pwpTarget = shNum === 1 ? pwpT1 : pwpT2;
+    const pwpAcv = hitungAcv(pwpActual, pwpTarget);
+    const pwpGap = hitungGap(pwpActual, pwpTarget);
+
+    // SERBA GRATIS
+    const sgT1 = getNumber("sgTarget1");
+    const sgT2 = getNumber("sgTarget2");
+    const sgActual = getNumber("sgActual");
+    const sgTarget = shNum === 1 ? sgT1 : sgT2;
+    const sgAcv = hitungAcv(sgActual, sgTarget);
+    const sgGap = hitungGap(sgActual, sgTarget);
+
+    // PULSA / PAKET
+    const pulsaT1 = getNumber("pulsaTarget1");
+    const pulsaT2 = getNumber("pulsaTarget2");
+    const pulsaActual = getNumber("pulsaActual");
+    const pulsaTarget = shNum === 1 ? pulsaT1 : pulsaT2;
+    const pulsaAcv = hitungAcv(pulsaActual, pulsaTarget);
+    const pulsaGap = hitungGap(pulsaActual, pulsaTarget);
+
+    // STRUK MEMBER
+    const strukTotal = getNumber("strukTotal");
+    const strukMember = getNumber("strukMember");
+    const strukAcv = hitungAcv(strukMember, strukTotal);
+
+    // NEW MEMBER
+    const nmTarget = getNumber("nmTarget");
+    const nmActual = getNumber("nmActual");
+    const nmAcv = hitungAcv(nmActual, nmTarget);
+    const nmGap = hitungGap(nmActual, nmTarget);
+
+    // SEGER
+    const segerTarget = getNumber("segerTarget");
+    const segerActual = getNumber("segerActual");
+    const segerAcv = hitungAcv(segerActual, segerTarget);
+    const segerGap = hitungGap(segerActual, segerTarget);
+
+    // CEMILAN CEBAN
+    const cemilanTarget = getNumber("cemilanTarget");
+    const cemilanActual = getNumber("cemilanActual");
+    const cemilanAcv = hitungAcv(cemilanActual, cemilanTarget);
+    const cemilanGap = hitungGap(cemilanActual, cemilanTarget);
+
+    const laporan =
+`*LAPORAN SHIFT ${shift}*
+
+Kode toko : ${kodeToko}
+Nama toko : ${namaToko}
+Tanggal   : ${tanggal}
+Pejabat   : ${pejabat}
+Kasir     : ${kasir}
+Shift     : ${shift}
+
+*SALES*
+- Target shift 1 : Rp ${formatRupiah(salesT1)}
+- Target shift 2 : Rp ${formatRupiah(salesT2)}
+- Actual        : Rp ${formatRupiah(salesActual)}
+- Acv%          : ${salesAcv}%
+- Gap           : ${salesGap.text}
+
+*1. #PSM#
+- Target QTY shift 1 : ${psmT1}
+- Target QTY shift 2 : ${psmT2}
+- Actual             : ${psmActual}
+- Acv%               : ${psmAcv}%
+- Gap                : ${psmGap.text}
+
+*2. #PWP#
+- Target QTY shift 1 : ${pwpT1}
+- Target QTY shift 2 : ${pwpT2}
+- Actual             : ${pwpActual}
+- Acv%               : ${pwpAcv}%
+- Gap                : ${pwpGap.text}
+
+*3. #SERBA GRATIS#
+- Target paket shift 1 : ${sgT1}
+- Target paket shift 2 : ${sgT2}
+- Actual               : ${sgActual}
+- Acv%                 : ${sgAcv}%
+- Gap                  : ${sgGap.text}
+
+*4. Pulsa/Paket*
+- Target Rp shift 1 : Rp ${formatRupiah(pulsaT1)}
+- Target Rp shift 2 : Rp ${formatRupiah(pulsaT2)}
+- Actual            : Rp ${formatRupiah(pulsaActual)}
+- Acv%              : ${pulsaAcv}%
+- Gap               : ${pulsaGap.text}
+
+*5. #STRUK MEMBER#
+- Jumlah Struk  : ${strukTotal}
+- Struk Member  : ${strukMember}
+- Acv%          : ${strukAcv}%
+
+*6. #NEW MEMBER#
+- Target : ${nmTarget}
+- Actual : ${nmActual}
+- Acv%   : ${nmAcv}%
+- Gap    : ${nmGap.text}
+
+*7. #SEGER#
+- Target : ${segerTarget}
+- Actual : ${segerActual}
+- Acv%   : ${segerAcv}%
+- Gap    : ${segerGap.text}
+
+*8. #CEMILAN CEBAN#
+- Target : ${cemilanTarget}
+- Actual : ${cemilanActual}
+- Acv%   : ${cemilanAcv}%
+- Gap    : ${cemilanGap.text}`;
+
+    document.getElementById("output").value = laporan;
+  }
+
+  async function copyLaporan() {
+    const textarea = document.getElementById("output");
+    const text = textarea.value || "";
+    if (!text.trim()) {
+      alert("Belum ada laporan. Klik GENERATE dulu.");
+      return;
+    }
+
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        textarea.select();
+        textarea.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+      }
+      alert("Laporan sudah di-copy. Tinggal paste di WA.");
+    } catch (e) {
+      console.error(e);
+      textarea.select();
+      textarea.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+      alert("Clipboard tidak mendukung penuh. Laporan sudah diseleksi, silakan copy manual.");
+    }
+  }
+
+  function openWhatsAppGroup() {
+    // Ganti link di bawah dengan link grup WA lu kalau mau direct
+    const url = "https://web.whatsapp.com/";
+    window.open(url, "_blank");
+  }
+  </script>
+</body>
+</html>
